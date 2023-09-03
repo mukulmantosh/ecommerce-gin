@@ -99,7 +99,7 @@ func Signup() gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusCreated, "Successfully signed in!")
+		c.JSON(http.StatusCreated, "Successfully signed up")
 
 	}
 }
@@ -143,7 +143,19 @@ func Login() gin.HandlerFunc {
 
 func ProductViewerAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		var products models.Product
+		if err := c.BindJSON(&products); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		products.ProductID = primitive.NewObjectID()
+		_, err := ProductCollection.InsertOne(ctx, products)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "not inserted"})
+		}
+		c.JSON(http.StatusOK, "successfully added")
 	}
 }
 
