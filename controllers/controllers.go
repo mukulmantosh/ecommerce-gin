@@ -3,10 +3,10 @@ package controllers
 import "C"
 import (
 	"context"
-	"ecommerce-gin/database"
-	"ecommerce-gin/models"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/mukulmantosh/ecommerce-gin/database"
+	"github.com/mukulmantosh/ecommerce-gin/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

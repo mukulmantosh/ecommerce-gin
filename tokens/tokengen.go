@@ -2,9 +2,9 @@ package tokens
 
 import (
 	"context"
-	"ecommerce-gin/database"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/mukulmantosh/ecommerce-gin/database"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

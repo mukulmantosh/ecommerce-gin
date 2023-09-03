@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"ecommerce-gin/tokens"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/mukulmantosh/ecommerce-gin/tokens"
 	"net/http"
 )
 
