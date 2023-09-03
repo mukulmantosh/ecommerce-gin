@@ -7,6 +7,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/mukulmantosh/ecommerce-gin/database"
 	"github.com/mukulmantosh/ecommerce-gin/models"
+	"github.com/mukulmantosh/ecommerce-gin/tokens"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -85,10 +86,10 @@ func Signup() gin.HandlerFunc {
 		user.ID = primitive.NewObjectID()
 		user.UserID = user.ID.Hex()
 
-		token, refreshToken, _ := generate.TokenGenerator(user.Email, user.FirstName, user.LastName, user.UserID)
+		token, refreshToken, _ := tokens.TokenGenerator(user.Email, user.FirstName, user.LastName, user.UserID)
 
-		user.Token = &token
-		user.RefreshToken = &refreshToken
+		user.Token = token
+		user.RefreshToken = refreshToken
 		user.UserCart = make([]models.ProductUser, 0)
 		user.AddressDetails = make([]models.Address, 0)
 		user.OrderStatus = make([]models.Order, 0)
@@ -110,6 +111,7 @@ func Login() gin.HandlerFunc {
 		defer cancel()
 
 		var user models.User
+		var foundUser models.User
 		if err := c.BindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
 			return
@@ -128,10 +130,10 @@ func Login() gin.HandlerFunc {
 			log.Println(msg)
 			return
 		}
-		token, refreshToken, _ := generate.TokenGenerator(foundUser.Email, foundUser.FirstName,
+		token, refreshToken, _ := tokens.TokenGenerator(foundUser.Email, foundUser.FirstName,
 			foundUser.LastName, foundUser.UserID)
 
-		generate.UpdateAllTokens(token, refreshToken, foundUser.UserID)
+		tokens.UpdateAllTokens(token, refreshToken, foundUser.UserID)
 
 		c.JSON(http.StatusFound, foundUser)
 		return
@@ -140,7 +142,9 @@ func Login() gin.HandlerFunc {
 }
 
 func ProductViewerAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
 
+	}
 }
 
 func SearchProduct() gin.HandlerFunc {

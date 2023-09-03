@@ -57,7 +57,7 @@ func (app *Application) AddToCart() gin.HandlerFunc {
 	}
 }
 
-func RemoveItem(app *Application) gin.HandlerFunc {
+func (app *Application) RemoveItem() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		productQueryID := c.Query("id")
 		if productQueryID == "" {

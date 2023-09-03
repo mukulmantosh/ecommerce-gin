@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/mukulmantosh/ecommerce-gin/middleware"
+	"github.com/mukulmantosh/ecommerce-gin/routes"
 	"log"
 	"os"
 )
@@ -17,12 +19,13 @@ func main() {
 		port = "8000"
 	}
 
-	app := controllers.NewApplication(database.ProductData(database.Client, "Products", database.UserData(database.Client, "Users")))
+	app := controllers.NewApplication(database.ProductData(database.Client, "Products"),
+		database.UserData(database.Client, "Users"))
 
 	router := gin.New()
 	router.Use(gin.Logger())
-	router.UserRoutes(routes)
-	router.use(middleware.Authentication())
+	routes.UserRoutes(router)
+	router.Use(middleware.Authentication())
 
 	router.GET("/addtocart", app.AddToCart())
 	router.GET("/removeitem", app.RemoveItem())
